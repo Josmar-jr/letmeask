@@ -31,6 +31,15 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     };
   }, [user]);
 
+  async function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    const result = await auth.signInWithPopup(provider);
+    const { user } = result;
+
+    verifyUser(user);
+  }
+
   function verifyUser(user: any) {
     if (user) {
       const { displayName, photoURL, uid } = user;
@@ -45,15 +54,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         avatar: photoURL,
       });
     }
-  }
-
-  async function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    const result = await auth.signInWithPopup(provider);
-    const { user } = result;
-
-    verifyUser(user);
   }
 
   return (
